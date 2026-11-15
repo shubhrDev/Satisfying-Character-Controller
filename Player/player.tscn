@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://ud3hlacbdclc"]
+
+[ext_resource type="Script" uid="uid://b3fosw1ergyrx" path="res://Player/scripts/state_machine.gd" id="1_btcbx"]
+[ext_resource type="Script" uid="uid://b8uoly2s3dfwf" path="res://Player/scripts/States/walk_state.gd" id="2_gwnis"]
+[ext_resource type="Script" uid="uid://cf1f77b8uq73v" path="res://Player/scripts/States/idle_state.gd" id="3_k53q1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e3c3e"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_otgu8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e3c3e"]
+size = Vector2(4, 8)
+
+[node name="Player" type="CharacterBody2D" unique_id=198898836]
+
+[node name="body" type="MeshInstance2D" parent="." unique_id=1877024279]
+scale = Vector2(4, 8)
+mesh = SubResource("BoxMesh_e3c3e")
+
+[node name="eyes" type="MeshInstance2D" parent="body" unique_id=906273059]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(0.335, -0.165)
+scale = Vector2(0.27, 0.295)
+mesh = SubResource("BoxMesh_otgu8")
+
+[node name="eyes2" type="MeshInstance2D" parent="body" unique_id=91882798]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(-0.075, -0.165)
+scale = Vector2(0.27, 0.295)
+mesh = SubResource("BoxMesh_otgu8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=564171346]
+shape = SubResource("RectangleShape2D_e3c3e")
+
+[node name="StateMachine" type="Node" parent="." unique_id=450718523 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("1_btcbx")
+initial_state = NodePath("IdleState")
+metadata/_custom_type_script = "uid://b3fosw1ergyrx"
+
+[node name="WalkState" type="Node" parent="StateMachine" unique_id=1595051024]
+script = ExtResource("2_gwnis")
+metadata/_custom_type_script = "uid://b8uoly2s3dfwf"
+
+[node name="IdleState" type="Node" parent="StateMachine" unique_id=1559439056]
+script = ExtResource("3_k53q1")
+metadata/_custom_type_script = "uid://cf1f77b8uq73v"
+
+[node name="strafeTimer" type="Timer" parent="." unique_id=994411051]
+unique_name_in_owner = true
+wait_time = 0.1
+one_shot = true
+
+[connection signal="timeout" from="strafeTimer" to="StateMachine/WalkState" method="_on_strafe_timer_timeout"]
