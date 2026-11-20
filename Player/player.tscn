@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://ud3hlacbdclc"]
 
-[ext_resource type="Script" uid="uid://b3fosw1ergyrx" path="res://Player/scripts/state_machine.gd" id="1_btcbx"]
-[ext_resource type="Script" uid="uid://b8uoly2s3dfwf" path="res://Player/scripts/States/walk_state.gd" id="2_gwnis"]
+[ext_resource type="Script" uid="uid://cv8m6w5vk6xj1" path="res://Player/scripts/player_base.gd" id="1_gwnis"]
+[ext_resource type="Script" uid="uid://gywdip5s47x3" path="res://Player/scripts/States/state_machine.gd" id="1_l8h54"]
+[ext_resource type="Script" uid="uid://buccd6sdhwomo" path="res://Player/scripts/States/move_state.gd" id="3_btcbx"]
 [ext_resource type="Script" uid="uid://cf1f77b8uq73v" path="res://Player/scripts/States/idle_state.gd" id="3_k53q1"]
+
+[sub_resource type="Curve" id="Curve_k53q1"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 0, Vector2(0.575, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.83616424, 0, 0]
+point_count = 3
 
 [sub_resource type="BoxMesh" id="BoxMesh_e3c3e"]
 
@@ -11,7 +16,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e3c3e"]
 size = Vector2(4, 8)
 
-[node name="Player" type="CharacterBody2D" unique_id=198898836]
+[node name="Player" type="CharacterBody2D" unique_id=198898836 node_paths=PackedStringArray("coyote_strafe_time")]
+script = ExtResource("1_gwnis")
+acceleration_curve = SubResource("Curve_k53q1")
+player_speed = 500.0
+coyote_strafe_time = NodePath("strafeTimer")
 
 [node name="body" type="MeshInstance2D" parent="." unique_id=1877024279]
 scale = Vector2(4, 8)
@@ -32,22 +41,25 @@ mesh = SubResource("BoxMesh_otgu8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=564171346]
 shape = SubResource("RectangleShape2D_e3c3e")
 
-[node name="StateMachine" type="Node" parent="." unique_id=450718523 node_paths=PackedStringArray("initial_state")]
-script = ExtResource("1_btcbx")
-initial_state = NodePath("IdleState")
-metadata/_custom_type_script = "uid://b3fosw1ergyrx"
-
-[node name="WalkState" type="Node" parent="StateMachine" unique_id=1595051024]
-script = ExtResource("2_gwnis")
-metadata/_custom_type_script = "uid://b8uoly2s3dfwf"
-
-[node name="IdleState" type="Node" parent="StateMachine" unique_id=1559439056]
-script = ExtResource("3_k53q1")
-metadata/_custom_type_script = "uid://cf1f77b8uq73v"
-
 [node name="strafeTimer" type="Timer" parent="." unique_id=994411051]
 unique_name_in_owner = true
-wait_time = 0.1
+wait_time = 0.2
 one_shot = true
 
-[connection signal="timeout" from="strafeTimer" to="StateMachine/WalkState" method="_on_strafe_timer_timeout"]
+[node name="StateMachine" type="Node" parent="." unique_id=1295562982 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("1_l8h54")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://gywdip5s47x3"
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1787945245 node_paths=PackedStringArray("move_state")]
+script = ExtResource("3_k53q1")
+move_state = NodePath("../Move")
+metadata/_custom_type_script = "uid://bxnipgrcic4y3"
+
+[node name="Move" type="Node" parent="StateMachine" unique_id=1481526363 node_paths=PackedStringArray("idle_state", "player_base")]
+script = ExtResource("3_btcbx")
+idle_state = NodePath("../Idle")
+player_base = NodePath("../..")
+metadata/_custom_type_script = "uid://bxnipgrcic4y3"
+
+[connection signal="timeout" from="strafeTimer" to="StateMachine/Move" method="_on_strafe_timer_timeout"]

@@ -1,12 +1,14 @@
 extends State
 
-class_name IdleState
+@export var move_state : State
 
-func enter():
-	print ("Entering Idle State")
+
+func enter_state() -> void:
+	pass
 	
-func handle_input(event : InputEvent):
-	if event.is_action_pressed("left") or event.is_action_pressed("right"):
-		state_machine.change_state("walkstate")
-	elif event.is_action_pressed("jump"):
-		state_machine.change_state("jumpstate")
+func update(_delta : float) -> void:
+	var horizontal_input := Input.get_axis("left", "right") 
+	var direction = Vector2(horizontal_input, 0)
+	if direction != Vector2.ZERO:
+		
+		switch_state.emit(move_state)
