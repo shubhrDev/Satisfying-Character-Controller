@@ -1,30 +1,21 @@
 extends State
 
 @export var idle_state : State
-@onready var strafe_timer: Timer = %strafeTimer
+@export var jump_state : State
+
 @export var player_base: PlayerBase
-var timer_started : bool = false
-var direction
 
 
-
-func enter_state() -> void:
-	player_base.player_movement_hold_timer = 0
-	
 func update(_delta : float) -> void:
-	var horizontal_input := Input.get_axis("left", "right") 
-	direction = Vector2(horizontal_input, 0)
-	
-	if direction == Vector2.ZERO and player_base.coyote_strafe_time.is_stopped():
-		player_base.coyote_strafe_time.start()
-	else:
-		player_base.move_left_right(direction, _delta)
-	
-		
+	if Input.is_action_just_pressed("jump"):
+		switch_state.emit(jump_state)
+	if not player_base.direction.x and player_base.coyote_strafe_time.is_stopped():
+		player_base.try_coyote_strafe()
 
+func physics_update(_delta : float) -> void:
+	player_base.move_left_right( _delta)
+	
 
 func _on_strafe_timer_timeout() -> void:
-	if direction == Vector2.ZERO:
+	if not player_base.is_intent_to_move:
 		switch_state.emit(idle_state)
-	
-		
