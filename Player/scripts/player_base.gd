@@ -51,9 +51,8 @@ func handle_jump():
 	
 	
 func apex_modifier():
-	velocity.y = 0
-	player_speed += increased_speed
-	
+	if absf(velocity.y) > 20:
+		pass
 func reset_apex_modifier():
 	player_speed -= increased_speed
 
