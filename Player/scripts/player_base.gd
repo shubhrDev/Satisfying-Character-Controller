@@ -4,13 +4,14 @@ class_name PlayerBase extends CharacterBody2D
 @export var player_speed : float
 @export var coyote_strafe_time : Timer
 @export var max_jump_height: float
-
+@export var player_gravity: float = 9.8
 var direction: Vector2
 var previous_direction : Vector2
 
 var is_intent_to_move: bool = true
 
-@export var increased_speed : float = 200
+
+var is_jumped := false
 
 var player_movement_hold_timer: float = 0 : 
 	set (new_value):
@@ -43,18 +44,17 @@ func _on_strafe_timer_timeout() -> void:
 		is_intent_to_move = true
 		
 func apply_gravity(_delta):
-	velocity += get_gravity() * _delta
+	velocity.y += player_gravity * _delta
 	#move_and_slide()
 
 func handle_jump():
-	velocity.y = -max_jump_height
+	if not is_jumped:
+		var target_height := sqrt(max_jump_height * player_gravity * 2)
+		#print (target_height)
+		velocity.y = -target_height
+		is_jumped = true
+	if not Input.is_action_pressed("jump"):
+		velocity *= 0.6
 	
-	
-func apex_modifier():
-	if absf(velocity.y) > 20:
-		pass
-func reset_apex_modifier():
-	player_speed -= increased_speed
-
 func _physics_process(delta: float) -> void:
 	move_and_slide()

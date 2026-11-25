@@ -21,9 +21,10 @@ size = Vector2(4, 8)
 [node name="Player" type="CharacterBody2D" unique_id=198898836 node_paths=PackedStringArray("coyote_strafe_time")]
 script = ExtResource("1_gwnis")
 acceleration_curve = SubResource("Curve_k53q1")
-player_speed = 500.0
+player_speed = 550.0
 coyote_strafe_time = NodePath("strafeTimer")
-max_jump_height = 700.0
+max_jump_height = 200.0
+player_gravity = 1500.0
 
 [node name="body" type="MeshInstance2D" parent="." unique_id=1877024279]
 scale = Vector2(4, 8)
@@ -79,9 +80,10 @@ player_base = NodePath("../..")
 fall_state = NodePath("../Fall")
 metadata/_custom_type_script = "uid://bxnipgrcic4y3"
 
-[node name="Fall" type="Node" parent="StateMachine" unique_id=2115711398 node_paths=PackedStringArray("move_state", "player_base")]
+[node name="Fall" type="Node" parent="StateMachine" unique_id=2115711398 node_paths=PackedStringArray("move_state", "idle_state", "player_base")]
 script = ExtResource("6_vtle1")
 move_state = NodePath("../Move")
+idle_state = NodePath("../Idle")
 player_base = NodePath("../..")
 metadata/_custom_type_script = "uid://bxnipgrcic4y3"
 
