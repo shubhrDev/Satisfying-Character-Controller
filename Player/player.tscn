@@ -21,10 +21,10 @@ size = Vector2(4, 8)
 [node name="Player" type="CharacterBody2D" unique_id=198898836 node_paths=PackedStringArray("coyote_strafe_time")]
 script = ExtResource("1_gwnis")
 acceleration_curve = SubResource("Curve_k53q1")
-player_speed = 550.0
+player_speed = 600.0
 coyote_strafe_time = NodePath("strafeTimer")
 max_jump_height = 200.0
-player_gravity = 1500.0
+player_gravity = 2500.0
 
 [node name="body" type="MeshInstance2D" parent="." unique_id=1877024279]
 scale = Vector2(4, 8)
@@ -50,11 +50,6 @@ unique_name_in_owner = true
 wait_time = 0.2
 one_shot = true
 
-[node name="apexModifierTime" type="Timer" parent="." unique_id=1444804841]
-unique_name_in_owner = true
-wait_time = 0.04
-one_shot = true
-
 [node name="StateMachine" type="Node" parent="." unique_id=1295562982 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("1_l8h54")
 initial_state = NodePath("Idle")
@@ -67,10 +62,11 @@ fall_state = NodePath("../Fall")
 jump_state = NodePath("../Jump")
 metadata/_custom_type_script = "uid://bxnipgrcic4y3"
 
-[node name="Move" type="Node" parent="StateMachine" unique_id=1481526363 node_paths=PackedStringArray("idle_state", "jump_state", "player_base")]
+[node name="Move" type="Node" parent="StateMachine" unique_id=1481526363 node_paths=PackedStringArray("idle_state", "jump_state", "fall_state", "player_base")]
 script = ExtResource("3_btcbx")
 idle_state = NodePath("../Idle")
 jump_state = NodePath("../Jump")
+fall_state = NodePath("../Fall")
 player_base = NodePath("../..")
 metadata/_custom_type_script = "uid://bxnipgrcic4y3"
 
@@ -80,10 +76,11 @@ player_base = NodePath("../..")
 fall_state = NodePath("../Fall")
 metadata/_custom_type_script = "uid://bxnipgrcic4y3"
 
-[node name="Fall" type="Node" parent="StateMachine" unique_id=2115711398 node_paths=PackedStringArray("move_state", "idle_state", "player_base")]
+[node name="Fall" type="Node" parent="StateMachine" unique_id=2115711398 node_paths=PackedStringArray("move_state", "idle_state", "jump_state", "player_base")]
 script = ExtResource("6_vtle1")
 move_state = NodePath("../Move")
 idle_state = NodePath("../Idle")
+jump_state = NodePath("../Jump")
 player_base = NodePath("../..")
 metadata/_custom_type_script = "uid://bxnipgrcic4y3"
 
@@ -93,5 +90,3 @@ target_position = Vector2(0, 5)
 
 [connection signal="timeout" from="strafeTimer" to="." method="_on_strafe_timer_timeout"]
 [connection signal="timeout" from="strafeTimer" to="StateMachine/Move" method="_on_strafe_timer_timeout"]
-[connection signal="timeout" from="apexModifierTime" to="." method="_on_strafe_timer_timeout"]
-[connection signal="timeout" from="apexModifierTime" to="StateMachine/Move" method="_on_strafe_timer_timeout"]

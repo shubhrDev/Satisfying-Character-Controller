@@ -31,7 +31,7 @@ func move_left_right(delta: float):
 
 	var target_speed := acceleration_curve.sample(player_movement_hold_timer) * player_speed * direction.x
 	velocity.x = target_speed
-
+	#print (velocity.x)
 	previous_direction = direction
 	
 func try_coyote_strafe():
@@ -54,7 +54,11 @@ func handle_jump():
 		velocity.y = -target_height
 		is_jumped = true
 	if not Input.is_action_pressed("jump"):
-		velocity *= 0.6
+		velocity *= 0.87
+
+func handle_coyote_jump():
+	pass
 	
 func _physics_process(delta: float) -> void:
 	move_and_slide()
+	

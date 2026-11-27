@@ -7,6 +7,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e3c3e"]
 size = Vector2(1002, 18)
 
+[sub_resource type="BoxMesh" id="BoxMesh_e3c3e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_otgu8"]
+size = Vector2(0.99838716, 1.0025063)
+
 [node name="level1" type="Node2D" unique_id=21620934]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1486196631]
@@ -24,4 +29,43 @@ shape = SubResource("RectangleShape2D_e3c3e")
 position = Vector2(-82, -109)
 scale = Vector2(9.425, 9.425)
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=952808260]
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=952808260]
+position = Vector2(8.700265, 11.564986)
+scale = Vector2(0.10610079, 0.10610079)
+position_smoothing_enabled = true
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1637913942]
+position = Vector2(218, -124)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D2" unique_id=82015999]
+self_modulate = Color(0.39016786, 0.3216341, 1, 1)
+scale = Vector2(130.21, 27.93)
+mesh = SubResource("BoxMesh_e3c3e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=994734417]
+scale = Vector2(130.21, 27.93)
+shape = SubResource("RectangleShape2D_otgu8")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="." unique_id=546583075]
+position = Vector2(-45, -230)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D3" unique_id=260314774]
+self_modulate = Color(0.39016786, 0.3216341, 1, 1)
+scale = Vector2(130.21, 27.93)
+mesh = SubResource("BoxMesh_e3c3e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3" unique_id=1856938005]
+scale = Vector2(130.21, 27.93)
+shape = SubResource("RectangleShape2D_otgu8")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="." unique_id=1851095897]
+position = Vector2(-396, -156)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D4" unique_id=1557337335]
+self_modulate = Color(0.39016786, 0.3216341, 1, 1)
+scale = Vector2(130.21, 27.93)
+mesh = SubResource("BoxMesh_e3c3e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4" unique_id=1811775161]
+scale = Vector2(130.21, 27.93)
+shape = SubResource("RectangleShape2D_otgu8")
